@@ -1,0 +1,9 @@
+{
+  "appName": "Route Planner",
+  "maintenanceMode": false,
+  "maxLocationsPerRoute": 20,
+  "defaultMapZoom": 13,
+  "timezone": "Asia/Riyadh",
+  "language": "ar",
+  "allowRegistration": true
+}

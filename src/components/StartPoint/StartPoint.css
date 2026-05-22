@@ -1,0 +1,118 @@
+.start-point {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.start-point__card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.start-point__card--end {
+  border: 1px dashed var(--border-default);
+}
+
+.start-point__row {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.start-point__input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  padding: 4px 0;
+  min-height: 36px;
+}
+
+.start-point__input::placeholder {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.start-point__label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: var(--space-xs);
+}
+
+.start-point__coords {
+  font-size: 0.75rem;
+  color: var(--accent-secondary);
+  margin-top: 2px;
+}
+
+.start-point__error {
+  font-size: 0.75rem;
+  color: var(--accent-danger);
+  margin-top: 2px;
+}
+
+.start-point__loading {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.start-point__gps-btn {
+  width: 44px;
+  height: 44px;
+  background: var(--accent-primary);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  color: white;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.start-point__gps-btn:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+.start-point__gps-btn--active {
+  background: var(--accent-secondary);
+  color: var(--text-dark);
+}
+
+.start-point__gps-btn--loading {
+  animation: pulse 1.5s infinite;
+}
+
+.start-point__end-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.start-point__use-as-end {
+  padding: 0 var(--space-xs);
+}
+
+.start-point__checkbox-label {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}

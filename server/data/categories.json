@@ -1,0 +1,58 @@
+[
+  {
+    "id": "1",
+    "name": "Food & Dining",
+    "icon": "utensils",
+    "color": "#FF6B6B",
+    "active": true
+  },
+  {
+    "id": "2",
+    "name": "Shopping",
+    "icon": "shopping-bag",
+    "color": "#4ECDC4",
+    "active": true
+  },
+  {
+    "id": "3",
+    "name": "Tourist Attractions",
+    "icon": "camera",
+    "color": "#FFE66D",
+    "active": true
+  },
+  {
+    "id": "4",
+    "name": "Hotels",
+    "icon": "bed",
+    "color": "#95E1D3",
+    "active": true
+  },
+  {
+    "id": "5",
+    "name": "Entertainment",
+    "icon": "film",
+    "color": "#DDA0DD",
+    "active": true
+  },
+  {
+    "id": "6",
+    "name": "Transportation",
+    "icon": "car",
+    "color": "#87CEEB",
+    "active": true
+  },
+  {
+    "id": "7",
+    "name": "Healthcare",
+    "icon": "heart",
+    "color": "#FFB6C1",
+    "active": true
+  },
+  {
+    "id": "8",
+    "name": "Education",
+    "icon": "graduation-cap",
+    "color": "#98D8C8",
+    "active": true
+  }
+]

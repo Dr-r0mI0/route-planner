@@ -1,0 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@400&family=Archivo:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+:root, [data-theme="dark"] {
+  --color-bg-primary: #1b1b1b;
+  --color-bg-secondary: #292929;
+  --color-text-primary: #ffffff;
+  --color-border: #374151; /* gray-800 equivalent */
+  --color-visited: #999999;
+}
+
+[data-theme="light"] {
+  --color-bg-primary: #d2d2d2;
+  --color-bg-secondary: #ffffff;
+  --color-text-primary: #222222;
+  --color-border: oklch(0.82 0 0);
+  --color-visited: #777777;
+}
+
+@theme {
+  --color-brand-bg: var(--color-bg-primary);
+  --color-brand-input: var(--color-bg-secondary);
+  --color-brand-visited: var(--color-visited);
+  --color-brand-orange: #e06938;
+  --color-brand-green: #b2d958;
+  --color-brand-blue: #4c8bf5;
+  --color-brand-text: var(--color-text-primary);
+  --color-brand-border: var(--color-border);
+  
+  --font-archivo: 'Archivo', sans-serif;
+  --font-alexandria: 'Alexandria', sans-serif;
+}
+
+body {
+    font-family: 'Archivo', sans-serif;
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    overscroll-behavior-y: contain;
+}
+
+/* Map Background Simulation */
+.map-bg-element {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect width="400" height="400" fill="%23222" /><path d="M50 100 Q 150 50 200 200 T 350 300" stroke="%23333" stroke-width="4" fill="none" /><path d="M100 300 Q 200 350 300 150" stroke="%23333" stroke-width="4" fill="none" /><circle cx="200" cy="200" r="4" fill="%23e06938" /><path d="M200 200 L 150 100" stroke="%23e06938" stroke-width="3" stroke-dasharray="5,5" fill="none" /></svg>');
+    background-size: cover;
+    background-position: center;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Custom Scrollbar for Textarea */
+textarea::-webkit-scrollbar {
+    width: 6px;
+}
+textarea::-webkit-scrollbar-track {
+    background: #1b1b1b;
+}
+textarea::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 10px;
+}
+
+/* Custom scrollbar for scrollable div container */
+.overflow-y-auto::-webkit-scrollbar {
+    width: 6px;
+}
+.overflow-y-auto::-webkit-scrollbar-track {
+    background: transparent;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 10px;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: #444;
+}
+
+/* Custom Checkbox */
+.custom-checkbox {
+    appearance: none;
+    background-color: white;
+    width: 1.2em;
+    height: 1.2em;
+    border-radius: 0.25em;
+    display: grid;
+    place-content: center;
+}
+
+.custom-checkbox::before {
+    content: "";
+    width: 0.7em;
+    height: 0.7em;
+    transform: scale(0);
+    box-shadow: inset 1em 1em #1b1b1b;
+    background-color: #1b1b1b;
+    transform-origin: bottom left;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    transition: 120ms transform ease-in-out;
+}
+
+.custom-checkbox:checked::before {
+    transform: scale(1);
+}
+
+.link-area {
+    height: inherit;
+}
+
+/* Tiny Input & Tiny Checkbox */
+.tiny-input {
+    background-color: #121212;
+    color: white;
+    border: 1px solid #404040;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    outline: none;
+    font-family: 'Archivo', sans-serif;
+}
+:root[data-theme='light'] .tiny-input {
+    background-color: #8f8f8f;
+    border: 1px solid #949494;
+    color: #111;
+}
+.tiny-input:focus {
+    border-color: #e06938;
+}
+
+.tiny-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: white;
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+}
+.tiny-checkbox::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    transform: scale(0);
+    box-shadow: inset 1em 1em #1b1b1b;
+    background-color: #1b1b1b;
+    transform-origin: bottom left;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    transition: 120ms transform ease-in-out;
+}
+.tiny-checkbox:checked::before {
+    transform: scale(1);
+}
+
+/* Cards Deck Container & Styles */
+.cards-deck-container {
+    position: relative;
+    height: 480px;
+    width: 100%;
+}
+
+.card-visited-style {
+    background-color: #999999 !important;
+    color: #333 !important;
+    text-decoration: line-through !important;
+    text-decoration-color: #505050 !important;
+}
+
+.card-unvisited-style {
+    background-color: #292929 !important;
+}
+.card-visited-style, .card-visited-active-style {
+    background-color: #3a3a3a !important; /* Light Gray */
+}
+.card-next-style {
+    background-color: #3d2323 !important; /* Reddish Hue */
+}
+.card-active-style, .card-next-active-style {
+    background-color: #e06938 !important; /* Orange */
+}
+
+.route-card {
+    position: absolute;
+    width: 85%;
+    left: 7.5%;
+    border-radius: 24px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.6);
+    transform-origin: top center;
+}
+
+.sortable-ghost {
+    opacity: 0.3;
+    background-color: #111 !important;
+    border: 2px dashed #e06938 !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.anim-fade-in {
+    animation: fadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* MAP CUSTOM STYLES */
+.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom {
+    top: 25% !important;
+}
+
+body[data-theme='light'] .app-top-header {
+    backdrop-filter: blur(4px) saturate(131%) !important;
+    -webkit-backdrop-filter: blur(4px) saturate(131%) !important;
+    background-color: rgba(255, 255, 255, 0.39) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(255, 255, 255, 0.125) !important;
+    --tw-gradient-position: none !important;
+    background-image: none !important;
+    --tw-gradient-from: none !important;
+    --tw-gradient-stops: none !important;
+    --tw-gradient-to: none !important;
+}
+

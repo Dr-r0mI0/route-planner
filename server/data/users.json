@@ -1,0 +1,66 @@
+[
+  {
+    "id": "1779424129000",
+    "email": "test@example.com",
+    "password": "$2b$10$Js97MLdm85Zrk7eU4uNIheQ7ZP1poNKmPCtefwY88fFS7NK.7okjO",
+    "name": "Test User",
+    "role": "user",
+    "createdAt": "2026-05-22T04:28:49.000Z"
+  },
+  {
+    "id": "1779424377916",
+    "email": "verifier12345@test.com",
+    "password": "$2b$10$h2Mm27hADFEwk0XTcGy8xuFGODd7H5m0dWt8xg4qqIidhE4PAvbF.",
+    "name": "Verifier Test",
+    "role": "user",
+    "createdAt": "2026-05-22T04:32:57.916Z"
+  },
+  {
+    "id": "1779424421204",
+    "email": "verifier-final-423617487.com",
+    "password": "$2b$10$TFsv8/DH90nvWz7q/ejWl.sKIQ/aeuqtLuv.g9tUisPZ0ZR9.lMca",
+    "name": "Final Test",
+    "role": "user",
+    "createdAt": "2026-05-22T04:33:41.204Z"
+  },
+  {
+    "id": "1779424421286",
+    "email": "verify@test.com",
+    "password": "$2b$10$Zm.KKuQAbhZOUFuoh9Zq6u4w0rXHmdj32LZy9TduXzd2SLvwfgKJq",
+    "name": "Verifier",
+    "role": "user",
+    "createdAt": "2026-05-22T04:33:41.286Z"
+  },
+  {
+    "id": "1779426091134",
+    "email": "verifier2@test.com",
+    "password": "$2b$10$ibyILcKLXPtQk1rE9IJ6gOSvALmNqeyxWRESefPvAumuWY7UMIy6G",
+    "name": "Verifier Test",
+    "role": "user",
+    "createdAt": "2026-05-22T05:01:31.134Z"
+  },
+  {
+    "id": "1779426105210",
+    "email": "verifier4@test.com",
+    "password": "$2b$10$qz9/5vxyoiYCCsZ1LAJrmO/DpycH9ZTBMTgudXPzWxwyS2RQZqGH.",
+    "name": "Verifier Test",
+    "role": "user",
+    "createdAt": "2026-05-22T05:01:45.210Z"
+  },
+  {
+    "id": "1779429086121",
+    "email": "admin@test.com",
+    "password": "$2b$10$zaFzaxlSdu8aQS2ZPTfZfOfoSJQE6szly2yGuPXW/OAGzozLPoO/a",
+    "name": "Admin User",
+    "role": "admin",
+    "createdAt": "2026-05-22T05:51:26.121Z"
+  },
+  {
+    "id": "1779429199609",
+    "email": "regular@test.com",
+    "password": "$2b$10$6ZOz1LR2rYJR3dUSfgCDaedfVW.M4OEDMQzVFRaARCaaCQa2iqU2.",
+    "name": "Regular User",
+    "role": "user",
+    "createdAt": "2026-05-22T05:53:19.609Z"
+  }
+]

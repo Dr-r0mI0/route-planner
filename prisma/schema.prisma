@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("user")
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  places    Place[]
+  visits    Visit[]
+  communityMembers CommunityMember[]
+  messages   Message[]
+}
+
+model Place {
+  id         String   @id @default(cuid())
+  name       String
+  address    String
+  mapUrl     String?
+  category   String
+  contacts   Json     @default("[]")
+  lastVisit  DateTime?
+  createdBy  String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user       User     @relation(fields: [createdBy], references: [id])
+  visits     Visit[]
+
+  @@index([category])
+  @@index([createdBy])
+}
+
+model Visit {
+  id          String   @id @default(cuid())
+  placeId     String
+  userId      String
+  scheduledAt DateTime
+  status      String   @default("pending")
+  notes       String?
+  completedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  place       Place    @relation(fields: [placeId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([placeId])
+  @@index([scheduledAt])
+}
+
+model Community {
+  id          String   @id @default(cuid())
+  name        String
+  description  String
+  category     String
+  imageUrl     String?
+  memberCount  Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  members     CommunityMember[]
+  messages    Message[]
+
+  @@index([category])
+}
+
+model CommunityMember {
+  id          String   @id @default(cuid())
+  userId      String
+  communityId String
+  role        String   @default("member")
+  joinedAt    DateTime @default(now())
+
+  user        User      @relation(fields: [userId], references: [id])
+  community   Community @relation(fields: [communityId], references: [id])
+
+  @@unique([userId, communityId])
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  communityId String
+  userId      String
+  content     String
+  createdAt   DateTime @default(now())
+
+  community   Community @relation(fields: [communityId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+
+  @@index([communityId])
+  @@index([createdAt])
+}

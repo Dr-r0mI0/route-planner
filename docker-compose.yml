@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  rout-planner:
+    build: .
+    container_name: rout-planner-app
+    restart: always
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - NODE_ENV=production

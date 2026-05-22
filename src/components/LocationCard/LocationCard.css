@@ -1,0 +1,241 @@
+/* ---- Location Card ---- */
+.loc-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+  transition: box-shadow var(--transition-fast);
+}
+
+.loc-card:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+/* Start Point Card */
+.loc-card--start {
+  background: var(--accent-secondary);
+  color: var(--text-dark);
+}
+
+.loc-card__start-label {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.loc-card__start-area {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.loc-card--start .loc-card__map-link {
+  color: var(--text-dark);
+  opacity: 0.7;
+}
+
+/* Top row */
+.loc-card__top {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-start;
+}
+
+.loc-card__drag {
+  width: 28px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  cursor: grab;
+  flex-shrink: 0;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+}
+
+.loc-card__drag:active {
+  cursor: grabbing;
+  color: var(--accent-primary);
+}
+
+.loc-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.loc-card__name {
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.loc-card__area {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  margin-top: 2px;
+  letter-spacing: 0.02em;
+}
+
+.loc-card__map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.6875rem;
+  color: var(--accent-secondary);
+  margin-top: 4px;
+  word-break: break-all;
+  text-decoration: none;
+}
+
+.loc-card__map-link:hover {
+  text-decoration: underline;
+}
+
+/* Controls row */
+.loc-card__controls {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  flex-wrap: wrap;
+}
+
+.loc-card__control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.loc-card__control-label {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Time inputs */
+.loc-card__time-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.loc-card__time-input {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 4px 6px;
+  color: var(--text-primary);
+  font-size: 0.6875rem;
+  font-family: var(--font-display);
+  width: 80px;
+  min-height: 28px;
+}
+
+.loc-card__time-input:focus {
+  border-color: var(--accent-primary);
+}
+
+.loc-card__time-sep {
+  font-size: 0.625rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Wait input */
+.loc-card__control-group--wait {
+  min-width: 60px;
+}
+
+.loc-card__wait-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.loc-card__wait-input {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 4px 6px;
+  color: var(--text-primary);
+  font-size: 0.75rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  width: 44px;
+  min-height: 28px;
+  text-align: center;
+}
+
+.loc-card__wait-input:focus {
+  border-color: var(--accent-primary);
+}
+
+.loc-card__wait-unit {
+  font-size: 0.625rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Book checkbox */
+.loc-card__control-group--book {
+  align-items: center;
+}
+
+.loc-card__book-check {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-primary);
+  cursor: pointer;
+}
+
+/* Delete button */
+.loc-card__delete-btn {
+  width: 36px;
+  height: 36px;
+  background: var(--accent-danger);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  margin-left: auto;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.loc-card__delete-btn:hover {
+  background: var(--accent-danger-hover);
+  transform: scale(1.05);
+}
+
+.loc-card__delete-icon {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  .loc-card__controls {
+    gap: var(--space-xs);
+  }
+  
+  .loc-card__time-input {
+    width: 70px;
+    font-size: 0.625rem;
+  }
+}

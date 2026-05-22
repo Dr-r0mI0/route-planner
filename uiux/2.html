@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Route Planner - Location List</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;700&family=Archivo:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-bg': '#1b1b1b',
+                        'brand-input': '#292929',
+                        'brand-orange': '#e06938',
+                        'brand-green': '#b2d958',
+                        'brand-blue': '#4c8bf5',
+                        'brand-red': '#e53935'
+                    },
+                    fontFamily: {
+                        'archivo': ['Archivo', 'sans-serif'],
+                        'alexandria': ['Alexandria', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- SortableJS Library for Touch-Friendly Drag & Drop -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Archivo', sans-serif;
+            background-color: #1b1b1b;
+            color: white;
+            overscroll-behavior-y: contain;
+        }
+
+        /* Map Background Simulation */
+        .map-bg {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect width="400" height="400" fill="%23222" /><path d="M50 100 Q 150 50 200 200 T 350 300" stroke="%23333" stroke-width="4" fill="none" /><path d="M100 300 Q 200 350 300 150" stroke="%23333" stroke-width="4" fill="none" /><circle cx="200" cy="200" r="4" fill="%23e06938" /><path d="M200 200 L 150 100" stroke="%23e06938" stroke-width="3" stroke-dasharray="5,5" fill="none" /></svg>');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.6;
+        }
+
+        /* Hide scrollbar for clean app view */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Custom scrollbar for scrollable div container */
+        .overflow-y-auto::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 10px;
+        }
+
+        .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+            background: #444;
+        }
+
+        /* Tiny inputs styles matching design */
+        .tiny-input {
+            background-color: #111;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+            outline: none;
+        }
+
+        .tiny-input:focus {
+            border-color: #e06938;
+        }
+
+        /* Custom Tiny Checkbox */
+        .tiny-checkbox {
+            appearance: none;
+            background-color: white;
+            width: 14px;
+            height: 14px;
+            border-radius: 2px;
+            display: grid;
+            place-content: center;
+            cursor: pointer;
+        }
+
+        .tiny-checkbox::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            transform: scale(0);
+            box-shadow: inset 1em 1em #1b1b1b;
+            background-color: #1b1b1b;
+            transform-origin: bottom left;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+            transition: 120ms transform ease-in-out;
+        }
+
+        .tiny-checkbox:checked::before {
+            transform: scale(1);
+        }
+
+        /* Sortable ghost card styling */
+        .sortable-ghost {
+            opacity: 0.3;
+            background-color: #111 !important;
+            border: 2px dashed #e06938 !important;
+        }
+    </style>
+</head>
+
+<body
+    class="relative overflow-hidden flex flex-col h-screen max-w-md mx-auto w-full md:max-w-none md:mx-0 shadow-2xl md:shadow-none bg-brand-bg select-none">
+
+    <!-- Map Background Simulation -->
+    <div class="absolute inset-0 map-bg z-0 h-[60%] md:h-full md:w-full transition-all duration-300"></div>
+
+    <!-- Main Sidebar / Controls Container (Exact match to your updated page 1 layout) -->
+    <div class="absolute inset-0 z-20 pointer-events-none md:pointer-events-auto
+                md:left-6 md:top-6 md:bottom-6 md:right-auto md:w-[440px] md:bg-brand-bg/95 md:backdrop-blur-md
+                md:rounded-[32px] md:border md:border-gray-800 md:shadow-[0_20px_50px_rgba(0,0,0,0.8)]
+                md:p-6 md:flex md:flex-col md:h-[calc(100vh-48px)]">
+
+        <!-- Top Header (Logo + Language + Theme - Exactly as you styled it) -->
+        <div class="absolute inset-x-0 top-0 flex justify-between items-start p-4 z-20 pointer-events-auto
+                    md:relative md:top-auto md:left-auto md:right-auto md:p-0 md:mb-6">
+            <div class="flex items-start gap-2">
+                <h1 class="p-1 leading-none">
+                    <span
+                        class="text-3xl text-white font-archivo tracking-[0.15em] block uppercase leading-none font-black">route</span>
+                    <span
+                        class="text-sm font-normal text-white font-archivo tracking-[0.15em] block uppercase leading-none mt-1 opacity-80">optimizer</span>
+                </h1>
+                <button
+                    class="mt-1 bg-brand-input hover:bg-[#333] active:scale-95 w-10 h-10 flex items-center justify-center rounded-[12px] shadow-lg border border-gray-800 focus-visible:ring-2 focus-visible:ring-brand-orange outline-none transition-all"
+                    aria-label="Route Planner Mode">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2ZM17.35 9.05L15.01 16.59C14.45 18.38 11.94 18.41 11.35 16.63L10.65 14.56C10.46 13.99 10.01 13.53 9.44 13.35L7.36 12.65C5.6 12.06 5.62 9.53 7.41 8.99L14.95 6.64C16.43 6.19 17.82 7.58 17.35 9.05Z"
+                            fill="#6b97ed" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex gap-2 mt-1">
+                <button
+                    class="language-btn bg-brand-input hover:bg-[#333] active:scale-95 w-10 h-10 flex items-center justify-center rounded-[12px] shadow-lg border border-gray-800 focus-visible:ring-2 focus-visible:ring-brand-orange outline-none transition-all"
+                    aria-label="Change Language">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="#ffffff" viewBox="0 0 24 24">
+                        <path
+                            d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z" />
+                    </svg>
+                </button>
+                <button
+                    class="dark-mode-btn bg-brand-input hover:bg-[#333] active:scale-95 w-10 h-10 flex items-center justify-center rounded-[12px] shadow-lg border border-gray-800 focus-visible:ring-2 focus-visible:ring-brand-orange outline-none transition-all"
+                    aria-label="Toggle Theme">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8V16Z" fill="#ffffff" />
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM12 4V8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16V20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z"
+                            fill="#ffffff" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Scrollable Content Wrapper -->
+        <div
+            class="absolute bottom-0 left-0 right-0 bg-brand-bg rounded-t-[32px] pt-6 pb-8 px-5 z-20 flex flex-col gap-4 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] border-t border-gray-800 pointer-events-auto
+                    absolute top-[76px] md:relative md:bottom-auto md:left-auto md:right-auto md:p-0 md:bg-transparent md:border-none md:shadow-none md:flex-1 md:overflow-y-auto md:pr-1 md:mt-2 md:gap-4">
+
+            <h2 class="text-white font-archivo font-black text-[24px] text-center tracking-[0.1em] uppercase shrink-0">
+                LOCATION LIST</h2>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-3 gap-3 w-full shrink-0">
+                <div
+                    class="bg-brand-input rounded-[14px] p-2 flex flex-col items-center justify-center border border-gray-800">
+                    <span class="text-[9px] text-gray-400 font-bold tracking-widest uppercase mb-1">LOCATIONS</span>
+                    <div class="flex items-center gap-1.5">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z"
+                                fill="#e06938" />
+                        </svg>
+                        <span class="font-archivo font-black text-xl text-white leading-none">21</span>
+                    </div>
+                </div>
+                <div
+                    class="bg-brand-input rounded-[14px] p-2 flex flex-col items-center justify-center border border-gray-800">
+                    <span class="text-[9px] text-gray-400 font-bold tracking-widest uppercase mb-1">WAITING</span>
+                    <div class="flex items-end gap-0.5">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            class="mb-0.5">
+                            <path d="M18 2H6V6L10 10L6 14V18H18V14L14 10L18 6V2ZM12 11.5L9.5 9V4H14.5V9L12 11.5Z"
+                                fill="#4c8bf5" />
+                        </svg>
+                        <span class="font-archivo font-black text-xl text-white leading-none">50</span>
+                        <span class="font-archivo text-[9px] text-gray-500 font-bold">MIN</span>
+                    </div>
+                </div>
+                <div
+                    class="bg-brand-input rounded-[14px] p-2 flex flex-col items-center justify-center border border-gray-800">
+                    <span class="text-[9px] text-gray-400 font-bold tracking-widest uppercase mb-1">BOOKABLE</span>
+                    <div class="flex items-center gap-1.5">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                                fill="#b2d958" />
+                        </svg>
+                        <span class="font-archivo font-black text-xl text-white leading-none">5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Start Point Card (Fixed above list) -->
+            <div class="bg-brand-orange rounded-2xl p-4 shadow-lg shrink-0 border border-orange-600/30">
+                <h3 class="font-archivo font-black text-white tracking-widest text-lg uppercase mb-0.5">START POINT</h3>
+                <p class="font-archivo text-[#1b1b1b] font-black text-sm tracking-wider uppercase mb-2">AS SAFA , JEDDAH
+                </p>
+                <div class="flex items-center gap-1 opacity-90">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10.59 13.41C11.37 14.19 12.63 14.19 13.41 13.41L15.53 11.29C16.89 9.93 16.89 7.71 15.53 6.35C14.17 4.99 11.95 4.99 10.59 6.35L9.53 7.41"
+                            stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path
+                            d="M13.41 10.59C12.63 9.81 11.37 9.81 10.59 10.59L8.47 12.71C7.11 14.07 7.11 16.29 8.47 17.65C9.83 19.01 12.05 19.01 13.41 17.65L14.47 16.59"
+                            stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <span
+                        class="font-archivo text-white text-[9px] tracking-wider uppercase font-bold">MAPS?Q=21.552825481,39.161705656</span>
+                </div>
+            </div>
+
+            <!-- Draggable Location Cards Container -->
+            <div id="sortable-list"
+                class="flex flex-col gap-3 flex-1 overflow-y-auto no-scrollbar pr-0.5 pb-20 md:pb-4">
+
+                <!-- Card 1 -->
+                <div
+                    class="flex items-center gap-2 w-full bg-brand-input rounded-[14px] p-3 border border-gray-800 shadow-md transition-all">
+                    <!-- Drag Handle -->
+                    <div
+                        class="drag-handle flex flex-col gap-1 py-3 cursor-grab w-5 items-center shrink-0 opacity-60 hover:opacity-100 transition-opacity">
+                        <div class="w-4 h-0.5 bg-white rounded-full"></div>
+                        <div class="w-4 h-0.5 bg-white rounded-full"></div>
+                        <div class="w-4 h-0.5 bg-white rounded-full"></div>
+                        <div class="w-4 h-0.5 bg-white rounded-full"></div>
+                    </div>
+
+                    <!-- Card Body Content -->
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-white font-bold text-sm tracking-wide mb-0.5 flex items-center justify-end gap-1 flex-wrap"
+                            dir="rtl">
+                            <span class="font-alexandria font-normal">صيدليه النهدى</span>
+                            <span class="font-archivo text-xs opacity-40">|</span>
+                            <span class="font-archivo uppercase text-xs tracking-wider">NAHDI PHARMACY</span>
+                        </h3>
+                        <p
+                            class="font-archivo text-brand-orange font-black text-[11px] tracking-wider uppercase mb-1.5 text-left">
+                            AR RAWDAH, JEDDAH</p>
+
+                        <div class="flex items-center gap-1 opacity-50 mb-2.5 justify-start">
+                            <span
+                                class="font-archivo text-white text-[9px] tracking-wide uppercase truncate">MAPS?Q=21.552825481,39.161705656</span>
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M10.59 13.41C11.37 14.19 12.63 14.19 13.41 13.41L15.53 11.29C16.89 9.93 16.89 7.71 15.53 6.35C14.17 4.99 11.95 4.99 10.59 6.35L9.53 7.41"
+                                    stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                </path>
+                            </svg>
+                        </div>
+
+                        <!-- Tiny Inputs Container -->
+                        <div class="flex items-end justify-between border-t border-gray-800/80 pt-2 gap-1.5">
+                            <!-- Allowed Visit Time -->
+                            <div class="flex flex-col gap-0.5">
+                                <span
+                                    class="text-[8px] text-gray-400 font-bold tracking-wider uppercase font-archivo">ALLOWED
+                                    TIME</span>
+                                <div class="flex items-center gap-1">
+                                    <input type="text" value="09:15 PM" class="tiny-input w-[62px] h-6 text-[9px]"
+                                        readonly="">
+                                    <span class="text-white text-[8px] font-bold opacity-60">TO</span>
+                                    <input type="text" value="09:15 PM" class="tiny-input w-[62px] h-6 text-[9px]"
+                                        readonly="">
+                                </div>
+                            </div>
+
+                            <!-- Waiting -->
+                            <div class="flex flex-col gap-0.5 items-center">
+                                <span
+                                    class="text-[8px] text-gray-400 font-bold tracking-wider uppercase font-archivo">WAITING</span>
+                                <div class="flex items-center gap-1">
+                                    <input type="text" value="53" class="tiny-input w-7 h-6 text-[10px]">
+                                    <span class="text-white text-[8px] font-bold opacity-60">MIN</span>
+                                </div>
+                            </div>
+
+                            <!-- Book Checkbox -->
+                            <div class="flex flex-col gap-0.5 items-center justify-center">
+                                <span
+                                    class="text-[8px] text-gray-400 font-bold tracking-wider uppercase font-archivo">BOOK</span>
+                                <div class="h-6 flex items-center justify-center">
+                                    <input type="checkbox" class="tiny-checkbox">
+                                </div>
+                            </div>
+
+                            <!-- Trash Action -->
+                            <div class="flex items-end">
+                                <button
+                                    class="bg-brand-red/90 hover:bg-brand-red w-7 h-6 rounded flex items-center justify-center shadow active:scale-95 transition-transform"
+                                    aria-label="Delete Location">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM19 4H15.5L14.5 3H9.5L8.5 4H5V6H19V4Z"
+                                            fill="white"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div
+                    class="flex items-center gap-2 w-full bg-brand-input rounded-[14px] p-3 border border-gray-800 shadow-md transition-all">
+                    <!-- Drag Handle -->
+                    <div
+                        class="drag-handle flex flex-col gap-1 py-3 cursor-grab w-5 items-center shrink-0 opacity-60 hover:opacity-100 transition-opacity">
+                        <div class="w-4 h-0.5 bg-white rounded-full"></div>
+                        <div class="w-4 h-0.5 bg-white rounded-full"></div>
+                        <div class="w-4 h-0.5 bg-white rounded-full"></div>
+                        <div class="w-4 h-0.5 bg-white rounded-full"></div>
+                    </div>
+
+                    <!-- Card Body Content -->
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-white font-bold text-sm tracking-wide mb-0.5 flex items-center justify-end gap-1 flex-wrap"
+                            dir="rtl">
+                            <span class="font-alexandria font-normal">صيدليه النهدى</span>
+                            <span class="font-archivo text-xs opacity-40">|</span>
+                            <span class="font-archivo uppercase text-xs tracking-wider">NAHDI PHARMACY</span>
+                        </h3>
+                        <p
+                            class="font-archivo text-brand-orange font-black text-[11px] tracking-wider uppercase mb-1.5 text-left">
+                            AR RAWDAH, JEDDAH</p>
+
+                        <div class="flex items-center gap-1 opacity-50 mb-2.5 justify-start">
+                            <span
+                                class="font-archivo text-white text-[9px] tracking-wide uppercase truncate">MAPS?Q=21.552825481,39.161705656</span>
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M10.59 13.41C11.37 14.19 12.63 14.19 13.41 13.41L15.53 11.29C16.89 9.93 16.89 7.71 15.53 6.35C14.17 4.99 11.95 4.99 10.59 6.35L9.53 7.41"
+                                    stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                </path>
+                            </svg>
+                        </div>
+
+                        <!-- Tiny Inputs Container -->
+                        <div class="flex items-end justify-between border-t border-gray-800/80 pt-2 gap-1.5">
+                            <!-- Allowed Visit Time -->
+                            <div class="flex flex-col gap-0.5">
+                                <span
+                                    class="text-[8px] text-gray-400 font-bold tracking-wider uppercase font-archivo">ALLOWED
+                                    TIME</span>
+                                <div class="flex items-center gap-1">
+                                    <input type="text" value="09:15 PM" class="tiny-input w-[62px] h-6 text-[9px]"
+                                        readonly="">
+                                    <span class="text-white text-[8px] font-bold opacity-60">TO</span>
+                                    <input type="text" value="09:15 PM" class="tiny-input w-[62px] h-6 text-[9px]"
+                                        readonly="">
+                                </div>
+                            </div>
+
+                            <!-- Waiting -->
+                            <div class="flex flex-col gap-0.5 items-center">
+                                <span
+                                    class="text-[8px] text-gray-400 font-bold tracking-wider uppercase font-archivo">WAITING</span>
+                                <div class="flex items-center gap-1">
+                                    <input type="text" value="53" class="tiny-input w-7 h-6 text-[10px]">
+                                    <span class="text-white text-[8px] font-bold opacity-60">MIN</span>
+                                </div>
+                            </div>
+
+                            <!-- Book Checkbox -->
+                            <div class="flex flex-col gap-0.5 items-center justify-center">
+                                <span
+                                    class="text-[8px] text-gray-400 font-bold tracking-wider uppercase font-archivo">BOOK</span>
+                                <div class="h-6 flex items-center justify-center">
+                                    <input type="checkbox" class="tiny-checkbox">
+                                </div>
+                            </div>
+
+                            <!-- Trash Action -->
+                            <div class="flex items-end">
+                                <button
+                                    class="bg-brand-red/90 hover:bg-brand-red w-7 h-6 rounded flex items-center justify-center shadow active:scale-95 transition-transform"
+                                    aria-label="Delete Location">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM19 4H15.5L14.5 3H9.5L8.5 4H5V6H19V4Z"
+                                            fill="white"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="flex items-center gap-2 w-full bg-brand-input rounded-[14px] p-3 border border-gray-800 shadow-md transition-all">
+                    <!-- Drag Handle -->
+                    <div
+                        class="drag-handle flex flex-col gap-1 py-3 cursor-grab w-5 items-center shrink-0 opacity-60 hover:opacity-100 transition-opacity">
+                        <div class="w-4 h-0.5 bg-white rounded-full"></div>
+                        <div class="w-4 h-0.5 bg-white rounded-full"></div>
+                        <div class="w-4 h-0.5 bg-white rounded-full"></div>
+                        <div class="w-4 h-0.5 bg-white rounded-full"></div>
+                    </div>
+
+                    <!-- Card Body Content -->
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-white font-bold text-sm tracking-wide mb-0.5 flex items-center justify-end gap-1 flex-wrap"
+                            dir="rtl">
+                            <span class="font-alexandria font-normal">صيدليه النهدى</span>
+                            <span class="font-archivo text-xs opacity-40">|</span>
+                            <span class="font-archivo uppercase text-xs tracking-wider">NAHDI PHARMACY</span>
+                        </h3>
+                        <p
+                            class="font-archivo text-brand-orange font-black text-[11px] tracking-wider uppercase mb-1.5 text-left">
+                            AR RAWDAH, JEDDAH</p>
+
+                        <div class="flex items-center gap-1 opacity-50 mb-2.5 justify-start">
+                            <span
+                                class="font-archivo text-white text-[9px] tracking-wide uppercase truncate">MAPS?Q=21.552825481,39.161705656</span>
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M10.59 13.41C11.37 14.19 12.63 14.19 13.41 13.41L15.53 11.29C16.89 9.93 16.89 7.71 15.53 6.35C14.17 4.99 11.95 4.99 10.59 6.35L9.53 7.41"
+                                    stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                </path>
+                            </svg>
+                        </div>
+
+                        <!-- Tiny Inputs Container -->
+                        <div class="flex items-end justify-between border-t border-gray-800/80 pt-2 gap-1.5">
+                            <!-- Allowed Visit Time -->
+                            <div class="flex flex-col gap-0.5">
+                                <span
+                                    class="text-[8px] text-gray-400 font-bold tracking-wider uppercase font-archivo">ALLOWED
+                                    TIME</span>
+                                <div class="flex items-center gap-1">
+                                    <input type="text" value="09:15 PM" class="tiny-input w-[62px] h-6 text-[9px]"
+                                        readonly="">
+                                    <span class="text-white text-[8px] font-bold opacity-60">TO</span>
+                                    <input type="text" value="09:15 PM" class="tiny-input w-[62px] h-6 text-[9px]"
+                                        readonly="">
+                                </div>
+                            </div>
+
+                            <!-- Waiting -->
+                            <div class="flex flex-col gap-0.5 items-center">
+                                <span
+                                    class="text-[8px] text-gray-400 font-bold tracking-wider uppercase font-archivo">WAITING</span>
+                                <div class="flex items-center gap-1">
+                                    <input type="text" value="53" class="tiny-input w-7 h-6 text-[10px]">
+                                    <span class="text-white text-[8px] font-bold opacity-60">MIN</span>
+                                </div>
+                            </div>
+
+                            <!-- Book Checkbox -->
+                            <div class="flex flex-col gap-0.5 items-center justify-center">
+                                <span
+                                    class="text-[8px] text-gray-400 font-bold tracking-wider uppercase font-archivo">BOOK</span>
+                                <div class="h-6 flex items-center justify-center">
+                                    <input type="checkbox" class="tiny-checkbox">
+                                </div>
+                            </div>
+
+                            <!-- Trash Action -->
+                            <div class="flex items-end">
+                                <button
+                                    class="bg-brand-red/90 hover:bg-brand-red w-7 h-6 rounded flex items-center justify-center shadow active:scale-95 transition-transform"
+                                    aria-label="Delete Location">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM19 4H15.5L14.5 3H9.5L8.5 4H5V6H19V4Z"
+                                            fill="white"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Continue Button (Anchored beautifully at container bottom) -->
+                <div
+                    class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-brand-bg via-brand-bg to-transparent pt-10 pointer-events-none
+                        md:relative md:bottom-20 md:left-auto md:right-auto md:p-0 md:bg-transparent md:pt-2 md:mt-2 shrink-0">
+                    <button
+                        class="bg-brand-orange hover:bg-brand-orange/90 w-full h-[52px] rounded-[16px] flex items-center justify-center shadow-lg active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white outline-none transition-all pointer-events-auto">
+                        <span class="font-archivo text-[22px] text-white tracking-[0.15em] font-bold">CONTINUE</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Injecting SortableJS Logic to Activate Touch-Friendly Card Reordering -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var el = document.getElementById('sortable-list');
+                if (el) {
+                    Sortable.create(el, {
+                        handle: '.drag-handle', // Strict reordering handle to avoid conflict with field entry
+                        animation: 200,         // Clean, modern transition animation (ms)
+                        ghostClass: 'sortable-ghost', // Applied configuration when item is dragged
+                        forceFallback: true     // Cross-platform mobile enhancement
+                    });
+                }
+            });
+        </script>
+</body>
+
+</html>

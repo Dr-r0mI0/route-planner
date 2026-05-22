@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route Planner - Search</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400&family=Archivo:wght@700&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-bg': '#1b1b1b',
+                        'brand-input': '#292929',
+                        'brand-orange': '#e06938',
+                        'brand-green': '#b2d958',
+                    },
+                    fontFamily: {
+                        'archivo': ['Archivo', 'sans-serif'],
+                        'alexandria': ['Alexandria', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body
+    class="relative overflow-hidden flex flex-col h-screen max-w-md mx-auto w-full md:max-w-none md:mx-0 shadow-2xl md:shadow-none bg-brand-bg select-none">
+
+    <!-- Map Background Simulation -->
+    <div class="absolute inset-0 map-bg z-0 h-[60%] md:h-full md:w-full transition-all duration-300"></div>
+
+    <!-- Main Sidebar / Controls Container -->
+    <div class="absolute inset-0 z-20 pointer-events-none md:pointer-events-auto
+                md:left-6 md:top-6 md:bottom-6 md:right-auto md:w-[440px] md:bg-brand-bg/95 md:backdrop-blur-md
+                md:rounded-[32px] md:border md:border-gray-800 md:shadow-[0_20px_50px_rgba(0,0,0,0.8)]
+                md:p-6 md:flex md:flex-col md:h-[calc(100vh-48px)]">
+
+        <!-- Top Header (Logo + Language + Theme) -->
+        <div class="absolute inset-x-0 top-0 flex justify-between items-start p-4 z-20 pointer-events-auto
+                    md:relative md:top-auto md:left-auto md:right-auto md:p-0 md:mb-6">
+            <div class="flex items-start gap-2">
+                <h1 class="p-1 leading-none">
+                    <span
+                        class="text-3xl text-white font-archivo tracking-[0.15em] block uppercase leading-none">route</span>
+                    <span
+                        class="text-sm font-normal text-white font-archivo tracking-[0.15em] block uppercase leading-none mt-1 opacity-80">optimizer</span>
+                </h1>
+                <button
+                    class="mt-1 bg-brand-input hover:bg-[#333] active:scale-95 w-10 h-10 flex items-center justify-center rounded-[12px] shadow-lg border border-gray-800 focus-visible:ring-2 focus-visible:ring-brand-orange outline-none transition-all"
+                    aria-label="Route Planner Mode">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2ZM17.35 9.05L15.01 16.59C14.45 18.38 11.94 18.41 11.35 16.63L10.65 14.56C10.46 13.99 10.01 13.53 9.44 13.35L7.36 12.65C5.6 12.06 5.62 9.53 7.41 8.99L14.95 6.64C16.43 6.19 17.82 7.58 17.35 9.05Z"
+                            fill="#6b97ed" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex gap-2 mt-1">
+                <button
+                    class="language-btn bg-brand-input hover:bg-[#333] active:scale-95 w-10 h-10 flex items-center justify-center rounded-[12px] shadow-lg border border-gray-800 focus-visible:ring-2 focus-visible:ring-brand-orange outline-none transition-all"
+                    aria-label="Change Language">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="#ffffff" viewBox="0 0 24 24">
+                        <path
+                            d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z" />
+                    </svg>
+                </button>
+                <button
+                    class="dark-mode-btn bg-brand-input hover:bg-[#333] active:scale-95 w-10 h-10 flex items-center justify-center rounded-[12px] shadow-lg border border-gray-800 focus-visible:ring-2 focus-visible:ring-brand-orange outline-none transition-all"
+                    aria-label="Toggle Theme">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8V16Z" fill="#ffffff" />
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM12 4V8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16V20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z"
+                            fill="#ffffff" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Area -->
+        <div class="absolute top-20 left-0 right-0 px-4 z-20 flex justify-between items-center pointer-events-auto
+                    md:absolute md:top-6 md:left-[456px] md:right-auto md:w-[600px] md:px-0 md:m-0">
+            <button
+                class="bg-[#111] hover:bg-brand-input active:scale-95 w-10 h-10 flex items-center justify-center rounded-[12px] shadow-lg border border-gray-800 focus-visible:ring-2 focus-visible:ring-brand-orange outline-none transition-all  md:hidden"
+                aria-label="Back">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2ZM13.92 16.13H9C8.59 16.13 8.25 15.79 8.25 15.38C8.25 14.97 8.59 14.63 9 14.63H13.92C15.2 14.63 16.25 13.59 16.25 12.3C16.25 11.01 15.21 9.97 13.92 9.97H8.85L9.11 10.23C9.4 10.53 9.4 11 9.1 11.3C8.95 11.45 8.76 11.52 8.57 11.52C8.38 11.52 8.19 11.45 8.04 11.3L6.47 9.72C6.18 9.43 6.18 8.95 6.47 8.66L8.04 7.09C8.33 6.8 8.81 6.8 9.1 7.09C9.39 7.38 9.39 7.86 9.1 8.15L8.77 8.48H13.92C16.03 8.48 17.75 10.2 17.75 12.31C17.75 14.42 16.03 16.13 13.92 16.13Z"
+                        fill="#b2d958" />
+                </svg>
+            </button>
+
+            <div
+                class="flex-1 ml-2 bg-[#111] rounded-full h-11 flex items-center px-4 border border-gray-800 shadow-xl focus-within:border-brand-orange/50 transition-colors">
+                <input type="text"
+                    class="bg-transparent border-none outline-none text-white font-archivo text-base tracking-wider w-full uppercase placeholder-gray-500"
+                    placeholder="SEARCH…" autocomplete="off" name="search">
+            </div>
+
+            <button
+                class="w-11 h-11 flex flex-col gap-1 items-center justify-center ml-2 bg-[#111] hover:bg-brand-input rounded-full border border-gray-800 shadow-xl focus-visible:ring-2 focus-visible:ring-brand-orange outline-none transition-colors"
+                aria-label="More Options">
+                <div class="w-1 h-1 bg-gray-300 rounded-full"></div>
+                <div class="w-1 h-1 bg-gray-300 rounded-full"></div>
+                <div class="w-1 h-1 bg-gray-300 rounded-full"></div>
+            </button>
+        </div>
+
+        <!-- Route Inputs Panel (Bottom Sheet) -->
+        <div
+            class="absolute bottom-0 left-0 right-0 bg-brand-bg rounded-t-[32px] pt-6 pb-8 px-5 z-20 flex flex-col gap-4 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] border-t border-gray-800 pointer-events-auto
+                    md:relative md:bottom-auto md:left-auto md:right-auto md:p-0 md:bg-transparent md:border-none md:shadow-none md:flex-1 md:overflow-y-auto md:pr-1 md:mt-2 md:gap-5 md:pt-5">
+
+            <!-- Start Point Input -->
+            <div class="flex items-center gap-3">
+                <div
+                    class="flex-1 bg-brand-input rounded-[16px] h-[52px] flex items-center px-5 relative overflow-hidden border border-transparent focus-within:border-brand-orange/50 transition-colors">
+                    <input type="text"
+                        class="w-full bg-transparent border-none outline-none font-archivo text-lg text-white tracking-[0.15em] z-10 placeholder-gray-400 uppercase"
+                        placeholder="START POINT" autocomplete="off" name="start_point">
+                    <div
+                        class="absolute right-0 top-0 h-full w-20 bg-gradient-to-l from-brand-input to-transparent z-0 pointer-events-none">
+                    </div>
+                </div>
+
+                <button
+                    class="w-[52px] h-[52px] bg-brand-orange hover:bg-brand-orange/90 rounded-[14px] flex items-center justify-center shrink-0 shadow-lg active:scale-[0.95] transition-all focus-visible:ring-2 focus-visible:ring-white outline-none"
+                    aria-label="Use Current Location">
+                    <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12,2 C12.3796958,2 12.693491,2.28215388 12.7431534,2.64822944 L12.75,2.75 L12.7490685,4.53770881 L12.7490685,4.53770881 C16.292814,4.88757432 19.1124257,7.70718602 19.4632195,11.2525316 L19.5,11.25 L21.25,11.25 C21.6642136,11.25 22,11.5857864 22,12 C22,12.3796958 21.7178461,12.693491 21.3517706,12.7431534 L21.25,12.75 L19.4616558,12.7490368 L19.4616558,12.7490368 C19.1124257,16.292814 16.292814,19.1124257 12.7474684,19.4632195 L12.75,19.5 L12.75,21.25 C12.75,21.6642136 12.4142136,22 12,22 C11.6203042,22 11.306509,21.7178461 11.2568466,21.3517706 L11.25,21.25 L11.2509632,19.4616558 L11.2509632,19.4616558 C7.70718602,19.1124257 4.88757432,16.292814 4.53678051,12.7474684 L4.5,12.75 L2.75,12.75 C2.33578644,12.75 2,12.4142136 2,12 C2,11.6203042 2.28215388,11.306509 2.64822944,11.2568466 L2.75,11.25 L4.53770881,11.2509315 L4.53770881,11.2509315 C4.88757432,7.70718602 7.70718602,4.88757432 11.2525316,4.53678051 L11.25,4.5 L11.25,2.75 C11.25,2.33578644 11.5857864,2 12,2 Z M12,6 C8.6862915,6 6,8.6862915 6,12 C6,15.3137085 8.6862915,18 12,18 C15.3137085,18 18,15.3137085 18,12 C18,8.6862915 15.3137085,6 12,6 Z M12,8 C14.209139,8 16,9.790861 16,12 C16,14.209139 14.209139,16 12,16 C9.790861,16 8,14.209139 8,12 C8,9.790861 9.790861,8 12,8 Z"
+                            fill="#FFFFFF" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Checkbox: Use as End Point -->
+            <label class="flex items-center gap-3 ml-2 mt-1 cursor-pointer select-none group w-max">
+                <input type="checkbox"
+                    class="custom-checkbox border-none cursor-pointer focus-visible:ring-2 focus-visible:ring-brand-orange outline-none">
+                <span
+                    class="font-archivo text-xs text-white uppercase tracking-widest font-bold group-hover:text-gray-200 transition-colors">USE
+                    AS END POINT</span>
+            </label>
+
+            <!-- End Point Input -->
+            <div
+                class="bg-brand-input rounded-[16px] h-[52px] flex items-center px-5 w-full border border-transparent focus-within:border-brand-orange/50 transition-colors">
+                <input type="text"
+                    class="w-full bg-transparent border-none outline-none font-archivo text-lg text-white tracking-[0.15em] placeholder-gray-400 uppercase opacity-90"
+                    placeholder="END POINT" autocomplete="off" name="end_point">
+            </div>
+
+            <!-- Textarea / Link Area -->
+            <div
+                class="bg-brand-input rounded-[18px] p-4 w-full relative flex-1 min-h-[160px] md:min-h-[180px] flex border border-transparent focus-within:border-brand-orange/50 transition-colors">
+                <textarea
+                    class="link-area w-full bg-transparent border-none outline-none text-white font-archivo text-[11px] resize-none placeholder-gray-400 tracking-wider uppercase leading-[1.6] focus-visible:ring-0"
+                    placeholder='PLACEHOLDER="PASTE GOOGLE MAPS LINKS HERE&#10;&#10;EXAMPLES:&#10;HTTPS://WWW.GOOGLE.COM/MAPS/?Q=21.552825,39.161705&#10;HTTPS://GOO.GL/MAPS/HXVNBKXD5LWPAJPZ6&#10;21.552825,39.161705"'></textarea>
+            </div>
+
+            <!-- Continue Button -->
+            <button
+                class="bg-brand-orange hover:bg-brand-orange/90 w-full h-[52px] rounded-[16px] flex items-center justify-center shadow-lg active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white outline-none transition-all mt-2 shrink-0">
+                <span class="font-archivo text-[22px] text-white tracking-[0.15em] font-bold">CONTINUE</span>
+            </button>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

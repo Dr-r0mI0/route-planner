@@ -1,0 +1,77 @@
+body {
+    font-family: 'Archivo', sans-serif;
+    background-color: #1b1b1b;
+    color: white;
+    overscroll-behavior-y: contain;
+}
+
+/* Map Background Simulation */
+.map-bg {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect width="400" height="400" fill="%23222" /><path d="M50 100 Q 150 50 200 200 T 350 300" stroke="%23333" stroke-width="4" fill="none" /><path d="M100 300 Q 200 350 300 150" stroke="%23333" stroke-width="4" fill="none" /><circle cx="200" cy="200" r="4" fill="%23e06938" /><path d="M200 200 L 150 100" stroke="%23e06938" stroke-width="3" stroke-dasharray="5,5" fill="none" /></svg>');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.6;
+}
+
+/* Custom Scrollbar for Textarea */
+textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: #1b1b1b;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 10px;
+}
+
+/* Custom scrollbar for scrollable div container */
+.overflow-y-auto::-webkit-scrollbar {
+    width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 10px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: #444;
+}
+
+/* Custom Checkbox */
+.custom-checkbox {
+    appearance: none;
+    background-color: white;
+    width: 1.2em;
+    height: 1.2em;
+    border-radius: 0.25em;
+    display: grid;
+    place-content: center;
+}
+
+.custom-checkbox::before {
+    content: "";
+    width: 0.7em;
+    height: 0.7em;
+    transform: scale(0);
+    box-shadow: inset 1em 1em #1b1b1b;
+    background-color: #1b1b1b;
+    transform-origin: bottom left;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    transition: 120ms transform ease-in-out;
+}
+
+.custom-checkbox:checked::before {
+    transform: scale(1);
+}
+
+.link-area {
+    height: inherit;
+}
