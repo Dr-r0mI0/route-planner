@@ -1,6 +1,6 @@
 import { useCallback, memo } from 'react';
-import { useApp } from '../../context/AppContext';
-import { useTheme } from '../../context/ThemeContext';
+import { useApp } from '../../context/AppContext.jsx';
+import { useTheme } from '../../context/ThemeContext.jsx';
 import DragHandle from './DragHandle';
 import LocationCardHeader from './LocationCardHeader';
 import LocationCardTimeSlot from './LocationCardTimeSlot';

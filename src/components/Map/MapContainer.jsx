@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { useTheme } from '../../context/ThemeContext';
-import { useApp } from '../../context/AppContext';
+import { useTheme } from '../../context/ThemeContext.jsx';
+import { useApp } from '../../context/AppContext.jsx';
 import { reverseGeocode } from '../../utils/geocoder';
 import './MapView.css';
 

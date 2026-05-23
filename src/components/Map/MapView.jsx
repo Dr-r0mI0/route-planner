@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { useApp, STEPS } from '../../context/AppContext';
-import { useI18n } from '../../utils/i18n';
+import { useApp, STEPS } from '../../context/AppContext.jsx';
+import { useI18n } from '../../utils/i18n.jsx';
 import MapContainer, { GOOGLE_MAPS_API_KEY } from './MapContainer';
 import MapMarkerLayer from './MapMarkerLayer';
 import MapRouteLayer from './MapRouteLayer';

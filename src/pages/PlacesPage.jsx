@@ -4,12 +4,12 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { useI18n } from '../../utils/i18n';
-import { useTheme } from '../../context/ThemeContext';
-import PlaceCard from './PlaceCard';
-import PlaceForm from './PlaceForm';
-import PlaceImportModal from './PlaceImportModal';
-import { fetchPlaces, createPlace, updatePlace, deletePlace } from '../../utils/placesApi';
+import { useI18n } from '../utils/i18n.jsx';
+import { useTheme } from '../context/ThemeContext.jsx';
+import PlaceCard from '../components/Places/PlaceCard.jsx';
+import PlaceForm from '../components/Places/PlaceForm.jsx';
+import PlaceImportModal from '../components/Places/PlaceImportModal.jsx';
+import { fetchPlaces, createPlace, updatePlace, deletePlace } from '../utils/placesApi';
 
 const CATEGORIES = [
   { id: 'all', label: 'ALL' },

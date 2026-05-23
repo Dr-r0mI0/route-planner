@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useApp } from '../../context/AppContext';
-import { useI18n } from '../../utils/i18n';
+import { useApp } from '../../context/AppContext.jsx';
+import { useI18n } from '../../utils/i18n.jsx';
 import { extractCoordsFromUrl } from '../../utils/urlParser';
 
 export default function StartPoint() {

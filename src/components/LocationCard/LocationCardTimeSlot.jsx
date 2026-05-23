@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext.jsx';
 import TimePicker from './TimePicker';
 import DurationPicker from './DurationPicker';
 

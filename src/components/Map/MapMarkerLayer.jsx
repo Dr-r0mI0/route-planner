@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useApp, STEPS } from '../../context/AppContext';
+import { useApp, STEPS } from '../../context/AppContext.jsx';
 
 export default function MapMarkerLayer({ mapRef, startPoint, endPoint, roundTrip, locations, optimizedRoute, step }) {
   const markersRef = useRef([]);

@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { useApp } from '../../context/AppContext';
-import { useI18n } from '../../utils/i18n';
+import { useApp } from '../../context/AppContext.jsx';
+import { useI18n } from '../../utils/i18n.jsx';
 import MapView from '../Map/MapView';
 
 import logoDark from '../../assets/svg/logo-dark.svg';
@@ -13,7 +13,7 @@ import enDark from '../../assets/svg/en-dark.svg';
 import enLight from '../../assets/svg/en-white.svg';
 import arDark from '../../assets/svg/ar-dark.svg';
 import arLight from '../../assets/svg/ar-white.svg';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext.jsx';
 import AppHeader from '../Header/AppHeader';
 
 export default function ActiveRoute({ onExit }) {

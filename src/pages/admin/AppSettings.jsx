@@ -4,8 +4,8 @@
  */
 
 import { useEffect, useState } from 'react';
-import { useAdmin } from '../../context/AdminContext';
-import { useTheme } from '../../context/ThemeContext';
+import { useAdmin } from '../../context/AdminContext.jsx';
+import { useTheme } from '../../context/ThemeContext.jsx';
 
 // Icons
 const SettingsIcon = () => (

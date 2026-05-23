@@ -1,8 +1,8 @@
 import { useState, useCallback, useMemo } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import { useApp, STEPS } from '../../context/AppContext';
-import { useI18n } from '../../utils/i18n';
-import { useTheme } from '../../context/ThemeContext';
+import { useApp, STEPS } from '../../context/AppContext.jsx';
+import { useI18n } from '../../utils/i18n.jsx';
+import { useTheme } from '../../context/ThemeContext.jsx';
 import { recalculateLegs } from '../../utils/routeOptimizer';
 import { formatDistance, formatDuration, buildNavigationUrl } from '../../utils/formatters';
 
@@ -163,8 +163,8 @@ export default function RouteResult({ onStartRoute }) {
 
                           {/* Card */}
                           <div className={`flex items-center gap-2 w-full rounded-[14px] p-3 border shadow-md transition-all ${isStart
-                              ? 'bg-[#e06938] border-orange-600/30'
-                              : 'bg-brand-input border-brand-border'
+                            ? 'bg-[#e06938] border-orange-600/30'
+                            : 'bg-brand-input border-brand-border'
                             }`}>
                             {/* Drag Handle */}
                             <div
@@ -224,57 +224,59 @@ export default function RouteResult({ onStartRoute }) {
       </div>
 
       {/* ── Action Buttons ── */}
-      <div className="flex flex-col gap-3 pt-4 pb-2 px-1 shrink-0">
-        {/* START ROUTE & RESET */}
-        <div className="flex gap-3 pointer-events-auto w-full h-[35px]">
-          {/* Reset Button (1/3) */}
-          <button
-            className="w-1/3 bg-red-500 hover:bg-red-600 flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white outline-none transition-all h-full rounded-[10px]"
-            onClick={() => {
-              if (window.confirm(t('general.confirmReset') || 'Are you sure you want to clear all data and start over?')) {
-                reset();
-              }
-            }}
-          >
-            <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4.06189 13C4.02104 12.6724 4 12.3387 4 12C4 7.58172 7.58172 4 12 4C14.5006 4 16.7332 5.14727 18.2002 6.94416M19.9381 11C19.979 11.3276 20 11.6613 20 12C20 16.4183 16.4183 20 12 20C9.61061 20 7.46589 18.9525 6 17.2916M9 17H6V17.2916M18.2002 4V6.94416M18.2002 6.94416V6.99993L15.2002 7M6 14.2916V17.2916M6 17.2916H6.12643L9.04351 17.078" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            <span className="font-archivo text-xs text-white font-bold">
-              RESET
-            </span>
-          </button>
-          
-          {/* Start Button (2/3) */}
-          <button
-            className="w-2/3 bg-[#e06938] hover:bg-[#e06938]/90 flex items-center justify-center shadow-lg active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white outline-none transition-all font-archivo text-[22px] text-white tracking-[0.15em] font-bold h-full rounded-[10px]"
-            onClick={onStartRoute}
-            id="start-route-button"
-          >
-            {t('route.start')}
-          </button>
-        </div>
-
-        {/* Secondary buttons row */}
-        <div className="flex gap-3">
-          {navUrl && (
-            <a
-              href={navUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 bg-brand-input hover:bg-[#333] text-brand-text h-10 rounded-[12px] flex items-center justify-center text-[10px] font-archivo font-bold uppercase tracking-widest border border-brand-border transition-colors"
+      <div className="mt-auto pt-4 w-full shrink-0 md:sticky md:bottom-0 md:z-30">
+        <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent -z-10 pointer-events-none md:-mx-[15px] md:px-[15px] md:-bottom-[15px] md:pb-[15px]" />
+        
+        <div className="flex flex-col gap-3 pointer-events-auto">
+          {/* START ROUTE & RESET */}
+          <div className="flex gap-3 w-full h-[35px]">
+            {/* Reset Button (1/3) */}
+            <button
+              className="w-1/3 bg-red-500 hover:bg-red-600 flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white outline-none transition-all h-full rounded-[10px]"
+              onClick={() => {
+                if (window.confirm(t('general.confirmReset') || 'Are you sure you want to clear all data and start over?')) {
+                  reset();
+                }
+              }}
             >
-              {t('route.fullMaps')}
-            </a>
-          )}
-          <button
-            className="flex-1 bg-brand-input hover:bg-[#333] text-brand-text h-10 rounded-[12px] flex items-center justify-center text-[10px] font-archivo font-bold uppercase tracking-widest border border-brand-border transition-colors"
-            onClick={handleSave}
-          >
-            {saved ? t('route.saved') : t('route.save')}
-          </button>
+              <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4.06189 13C4.02104 12.6724 4 12.3387 4 12C4 7.58172 7.58172 4 12 4C14.5006 4 16.7332 5.14727 18.2002 6.94416M19.9381 11C19.979 11.3276 20 11.6613 20 12C20 16.4183 16.4183 20 12 20C9.61061 20 7.46589 18.9525 6 17.2916M9 17H6V17.2916M18.2002 4V6.94416M18.2002 6.94416V6.99993L15.2002 7M6 14.2916V17.2916M6 17.2916H6.12643L9.04351 17.078" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <span className="font-archivo text-xs text-white font-bold tracking-wider">
+                RESET
+              </span>
+            </button>
+            
+            {/* Start Button (2/3) */}
+            <button
+              className="w-2/3 bg-[#e06938] hover:bg-[#e06938]/90 flex items-center justify-center shadow-lg active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white outline-none transition-all font-archivo text-[22px] text-white tracking-[0.15em] font-bold h-full rounded-[10px]"
+              onClick={onStartRoute}
+              id="start-route-button"
+            >
+              {t('route.start')}
+            </button>
+          </div>
+
+          {/* Secondary buttons row */}
+          <div className="flex gap-3">
+            {navUrl && (
+              <a
+                href={navUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 bg-brand-input hover:bg-[#333] text-brand-text h-10 rounded-[12px] flex items-center justify-center text-[10px] font-archivo font-bold uppercase tracking-widest border border-brand-border transition-colors backdrop-blur-md"
+              >
+                {t('route.fullMaps')}
+              </a>
+            )}
+            <button
+              className="flex-1 bg-brand-input hover:bg-[#333] text-brand-text h-10 rounded-[12px] flex items-center justify-center text-[10px] font-archivo font-bold uppercase tracking-widest border border-brand-border transition-colors backdrop-blur-md"
+              onClick={handleSave}
+            >
+              {saved ? t('route.saved') : t('route.save')}
+            </button>
+          </div>
         </div>
-
-
       </div>
     </div>
   );

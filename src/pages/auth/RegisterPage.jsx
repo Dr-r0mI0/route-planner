@@ -3,7 +3,7 @@
  */
 
 import { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext.jsx';
 
 export default function RegisterPage() {
   const { register, loading, error, clearError } = useAuth();

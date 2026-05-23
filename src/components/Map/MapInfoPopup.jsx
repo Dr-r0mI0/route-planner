@@ -1,4 +1,4 @@
-import { useI18n } from '../../utils/i18n';
+import { useI18n } from '../../utils/i18n.jsx';
 
 export function useMapPopupContent() {
   const { t } = useI18n();

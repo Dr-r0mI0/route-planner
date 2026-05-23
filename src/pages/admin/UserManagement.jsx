@@ -4,9 +4,9 @@
  */
 
 import { useEffect, useState } from 'react';
-import { useAdmin } from '../../context/AdminContext';
-import { useAuth } from '../../context/AuthContext';
-import { useTheme } from '../../context/ThemeContext';
+import { useAdmin } from '../../context/AdminContext.jsx';
+import { useAuth } from '../../context/AuthContext.jsx';
+import { useTheme } from '../../context/ThemeContext.jsx';
 
 // Icons
 const UsersIcon = () => (

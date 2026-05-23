@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext.jsx';
 
 function LocationCardHeader({ primaryName, areaName, mapUrl, shortMapUrl }) {
   const { isLight } = useTheme();

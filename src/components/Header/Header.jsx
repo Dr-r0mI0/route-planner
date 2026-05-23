@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useApp, STEPS } from '../../context/AppContext';
-import { useI18n } from '../../utils/i18n';
+import { useApp, STEPS } from '../../context/AppContext.jsx';
+import { useI18n } from '../../utils/i18n.jsx';
 
 /**
  * Header — Pixel-perfect match to 1.html / 2.html / 3.html header

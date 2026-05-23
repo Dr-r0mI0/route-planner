@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, memo } from 'react';
-import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext.jsx';
 
 function ScrollColumn({ max, value, onChange }) {
   const scrollRef = useRef(null);

@@ -4,8 +4,8 @@
  */
 
 import { useState } from 'react';
-import { useTheme } from '../../context/ThemeContext';
-import { useI18n } from '../../utils/i18n';
+import { useTheme } from '../../context/ThemeContext.jsx';
+import { useI18n } from '../../utils/i18n.jsx';
 
 export default function VisitCard({ visit, onEdit, onDelete, onComplete, onSkip }) {
   const { isLight } = useTheme();

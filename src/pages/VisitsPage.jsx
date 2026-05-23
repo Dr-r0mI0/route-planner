@@ -4,10 +4,10 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { useI18n } from '../../utils/i18n';
-import { useTheme } from '../../context/ThemeContext';
-import VisitCard from '../Visits/VisitCard';
-import VisitForm from '../Visits/VisitForm';
+import { useI18n } from '../utils/i18n.jsx';
+import { useTheme } from '../context/ThemeContext.jsx';
+import VisitCard from '../components/Visits/VisitCard.jsx';
+import VisitForm from '../components/Visits/VisitForm.jsx';
 import { 
   fetchVisits, 
   createVisit, 
@@ -15,7 +15,7 @@ import {
   deleteVisit,
   completeVisit,
   skipVisit 
-} from '../../utils/visitsApi';
+} from '../utils/visitsApi';
 
 const STATUS_TABS = [
   { id: 'all', label: 'ALL' },

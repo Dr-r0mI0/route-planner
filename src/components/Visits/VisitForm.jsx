@@ -4,8 +4,8 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useTheme } from '../../context/ThemeContext';
-import { useI18n } from '../../utils/i18n';
+import { useTheme } from '../../context/ThemeContext.jsx';
+import { useI18n } from '../../utils/i18n.jsx';
 import { fetchPlaces } from '../../utils/placesApi';
 
 export default function VisitForm({ visit, defaultDate, onSubmit, onClose }) {

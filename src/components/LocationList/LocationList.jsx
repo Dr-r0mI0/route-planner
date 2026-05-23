@@ -1,8 +1,8 @@
 import { useEffect, useRef, useMemo, useCallback } from 'react';
 import Sortable from 'sortablejs';
-import { useApp, STEPS } from '../../context/AppContext';
-import { useI18n } from '../../utils/i18n';
-import { useTheme } from '../../context/ThemeContext';
+import { useApp, STEPS } from '../../context/AppContext.jsx';
+import { useI18n } from '../../utils/i18n.jsx';
+import { useTheme } from '../../context/ThemeContext.jsx';
 import LocationCard from '../LocationCard/LocationCard';
 
 export default function LocationList() {
@@ -130,8 +130,10 @@ export default function LocationList() {
         ))}
       </div>
 
-      {/* Continue Button */}
-      <div className="absolute bottom-0 left-0 right-0 px-5 pb-10 pt-16 bg-gradient-to-t from-brand-bg via-brand-bg to-transparent pointer-events-none md:relative md:bottom-auto md:left-auto md:right-auto md:p-0 md:bg-transparent md:pt-2 md:mt-2 shrink-0 z-10">
+      {/* ── Action Buttons ── */}
+      <div className="absolute bottom-0 left-0 right-0 px-5 pb-8 pt-16 bg-gradient-to-t from-black/90 via-black/60 to-transparent pointer-events-none md:sticky md:bottom-0 md:left-auto md:right-auto md:px-0 md:bg-none md:pt-4 md:pb-0 shrink-0 z-30 w-full">
+        <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent -z-10 pointer-events-none md:-mx-[15px] md:px-[15px] md:-bottom-[15px] md:pb-[15px]" />
+        
         <div className="flex gap-3 pointer-events-auto w-full h-[35px]">
           {/* Reset Button (1/3) */}
           <button
@@ -143,13 +145,13 @@ export default function LocationList() {
             }}
           >
             <svg width="14px" height="14px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4.06189 13C4.02104 12.6724 4 12.3387 4 12C4 7.58172 7.58172 4 12 4C14.5006 4 16.7332 5.14727 18.2002 6.94416M19.9381 11C19.979 11.3276 20 11.6613 20 12C20 16.4183 16.4183 20 12 20C9.61061 20 7.46589 18.9525 6 17.2916M9 17H6V17.2916M18.2002 4V6.94416M18.2002 6.94416V6.99993L15.2002 7M6 14.2916V17.2916M6 17.2916H6.12643L9.04351 17.078" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M4.06189 13C4.02104 12.6724 4 12.3387 4 12C4 7.58172 7.58172 4 12 4C14.5006 4 16.7332 5.14727 18.2002 6.94416M19.9381 11C19.979 11.3276 20 11.6613 20 12C20 16.4183 16.4183 20 12 20C9.61061 20 7.46589 18.9525 6 17.2916M9 17H6V17.2916M18.2002 4V6.94416M18.2002 6.94416V6.99993L15.2002 7M6 14.2916V17.2916M6 17.2916H6.12643L9.04351 17.078" stroke="#FFFFFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <span className="font-archivo text-xs text-white font-bold">
               RESET
             </span>
           </button>
-          
+
           {/* Continue Button (2/3) */}
           <button
             className="w-2/3 bg-brand-orange hover:bg-brand-orange/90 flex items-center justify-center shadow-[0_10px_30px_rgba(224,105,56,0.3)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-white outline-none transition-all disabled:opacity-40 disabled:cursor-not-allowed h-full rounded-[10px]"
